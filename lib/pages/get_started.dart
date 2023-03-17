@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grocerry_shopping_app/pages/register_page.dart';
 
 import 'home_page.dart';
 
@@ -14,7 +15,7 @@ class _GetStartedState extends State<GetStarted> {
     setState(() {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
+        MaterialPageRoute(builder: (context) => const RegisterPage()),
       );
     });
   }
@@ -46,7 +47,7 @@ class _GetStartedState extends State<GetStarted> {
               "Shop Your Daily",
               style: TextStyle(
                 fontSize: 32,
-                color: Colors.green,
+                color: Color.fromARGB(255, 23, 155, 69),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -54,7 +55,7 @@ class _GetStartedState extends State<GetStarted> {
               "Necessary",
               style: TextStyle(
                 fontSize: 32,
-                color: Colors.green,
+                color: Color.fromARGB(255, 23, 155, 69),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -64,19 +65,24 @@ class _GetStartedState extends State<GetStarted> {
             Padding(
               padding: const EdgeInsets.all(1),
               child: Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(0),
                 decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.circular(20),
+                  color: const Color.fromARGB(255, 23, 155, 69),
+                  borderRadius: BorderRadius.circular(30),
                 ),
                 width: 280,
-                height: 56,
+                height: 52,
                 child: ElevatedButton(
                   onPressed: _getStartedPressed,
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
                   child: const Text(
                     'Get Started',
                     style: TextStyle(
-                        color: Colors.white,
+                        color: Color.fromARGB(255, 231, 225, 225),
                         fontWeight: FontWeight.bold,
                         fontSize: 18),
                   ),

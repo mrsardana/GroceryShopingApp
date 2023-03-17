@@ -4,7 +4,10 @@ import 'package:grocerry_shopping_app/models/category.dart';
 import 'package:grocerry_shopping_app/config.dart';
 import 'package:grocerry_shopping_app/models/product.dart';
 import 'package:grocerry_shopping_app/models/product_filter.dart';
+import 'package:grocerry_shopping_app/utils/shared_service.dart';
 import 'package:http/http.dart' as http;
+
+import '../models/login_response_model.dart';
 
 final apiService = Provider((ref) => APIService());
 
@@ -55,6 +58,64 @@ class APIService {
       return productsFromJson(data["data"]);
     } else {
       return null;
+    }
+  }
+
+  static Future<bool> registerUser(
+    String fullName,
+    String email,
+    String password,
+    String address,
+    String phone,
+  ) async {
+    Map<String, String> requestHeaders = {'Content-Type': 'application/json'};
+    var url = Uri.http(Config.apiURL, Config.registerAPI);
+
+    var response = await client.post(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode(
+        {
+          "fullName": fullName,
+          "email": email,
+          "password": password,
+          "address": address,
+          "phone": phone
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static Future<bool> loginUser(
+    String email,
+    String password,
+  ) async {
+    Map<String, String> requestHeaders = {'Content-Type': 'application/json'};
+    var url = Uri.http(Config.apiURL, Config.loginAPI);
+
+    var response = await client.post(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode(
+        {
+          "email": email,
+          "password": password,
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      await SharedService.setLoginDetails(
+          loginResponseModelJson(response.body));
+      return true;
+    } else {
+      return false;
     }
   }
 }
