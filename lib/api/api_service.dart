@@ -4,6 +4,7 @@ import 'package:grocerry_shopping_app/models/category.dart';
 import 'package:grocerry_shopping_app/config.dart';
 import 'package:grocerry_shopping_app/models/product.dart';
 import 'package:grocerry_shopping_app/models/product_filter.dart';
+import 'package:grocerry_shopping_app/models/slider.dart';
 import 'package:grocerry_shopping_app/utils/shared_service.dart';
 import 'package:http/http.dart' as http;
 
@@ -116,6 +117,40 @@ class APIService {
       return true;
     } else {
       return false;
+    }
+  }
+
+  Future<List<SliderModel>?> getSliders(page, pageSize) async {
+    Map<String, String> requestHeaders = {'Content-Type': 'application/json'};
+
+    Map<String, String> queryString = {
+      'page': page.toString(),
+      'pageSize': pageSize.toString()
+    };
+    var url = Uri.http(Config.apiURL, Config.sliderAPI, queryString);
+    var response = await client.get(url, headers: requestHeaders);
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+
+      return slidersFromJson(data["data"]);
+    } else {
+      return null;
+    }
+  }
+
+  Future<Product?> getProductDetails(String productId) async {
+    Map<String, String> requestHeaders = {'Content-Type': 'application/json'};
+
+    var url = Uri.http(Config.apiURL, Config.productAPI + "/" + productId);
+    var response = await client.get(url, headers: requestHeaders);
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+
+      return Product.fromJson(data["data"]);
+    } else {
+      return null;
     }
   }
 }

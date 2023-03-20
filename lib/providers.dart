@@ -7,6 +7,7 @@ import 'package:grocerry_shopping_app/models/category.dart';
 import 'package:grocerry_shopping_app/models/pagination.dart';
 import 'package:grocerry_shopping_app/models/product.dart';
 import 'package:grocerry_shopping_app/models/product_filter.dart';
+import 'package:grocerry_shopping_app/models/slider.dart';
 
 final categoriesProvider =
     FutureProvider.family<List<Category>?, PaginationModel>(
@@ -38,4 +39,20 @@ final productsNotifierProvider =
     ref.watch(apiService),
     ref.watch(productsFilterProvider),
   ),
+);
+
+final slidersProvider =
+    FutureProvider.family<List<SliderModel>?, PaginationModel>(
+  (ref, paginationModel) {
+    final sliderRepo = ref.watch(apiService);
+    return sliderRepo.getSliders(
+        paginationModel.page, paginationModel.pageSize);
+  },
+);
+
+final productDetailsProvider = FutureProvider.family<Product?, String>(
+  (ref, productId) {
+    final apiRepository = ref.watch(apiService);
+    return apiRepository.getProductDetails(productId);
+  },
 );
