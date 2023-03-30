@@ -15,15 +15,15 @@ List<Product> productsFromJson(dynamic str) => List<Product>.from(
 abstract class Product with _$Product {
   factory Product({
     required String productName,
-    required Category category,
-    required String productShortDescription,
+    required Category? category,
+    required String? productShortDescription,
     required String productDescription,
     required double productPrice,
     required double productSalePrice,
     required String productImage,
-    required String productSKU,
-    required String productType,
-    required String stockStatus,
+    required String? productSKU,
+    required String? productType,
+    required String? stockStatus,
     required String productId,
   }) = _Product;
 

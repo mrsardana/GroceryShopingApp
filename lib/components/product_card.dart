@@ -73,7 +73,7 @@ class ProductCard extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 8.0, left: 10),
                 child: Text(
                   model!.productName,
-                  textAlign: TextAlign.left,
+                  textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                       fontSize: 12,

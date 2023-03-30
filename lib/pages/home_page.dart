@@ -8,20 +8,16 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Product model = ;
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Colors.grey[100],
       body: ListView(
         children: const [
           HomeSliderWidget(),
           SizedBox(
-            height: 15,
+            height: 8,
           ),
           HomeCategoriesWidget(),
           HomeProductsWidget(),
-          // ProductCard(
-          //   model: model,
-          // ),
         ],
       ),
     );

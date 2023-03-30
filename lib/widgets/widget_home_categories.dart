@@ -12,9 +12,10 @@ class HomeCategoriesWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: EdgeInsets.only(left: 16.0, top: 8),
             child: Text(
               "All Categories",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

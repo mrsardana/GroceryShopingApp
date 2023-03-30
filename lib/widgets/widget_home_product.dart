@@ -16,21 +16,25 @@ class HomeProductsWidget extends ConsumerWidget {
       color: Colors.grey[100],
       child: Column(children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: const [
             Padding(
-              padding: EdgeInsets.only(left: 16, top: 15),
+              padding: EdgeInsets.only(left: 16, top: 5),
               child: Text(
-                "Top Products",
+                "Top 10 Products",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             )
           ],
         ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: _productList(ref),
+        const SizedBox(
+          height: 10,
         ),
+        _productList(ref),
+        // Padding(
+        //   padding: const EdgeInsets.all(8.0),
+        //   child: _productList(ref),
+        // ),
       ]),
     );
   }
@@ -56,22 +60,35 @@ class HomeProductsWidget extends ConsumerWidget {
 
   Widget _buildProductList(List<Product> products) {
     return Container(
-      height: 200,
+      height: 315,
       alignment: Alignment.centerLeft,
-      child: ListView.builder(
-        physics: ClampingScrollPhysics(),
-        scrollDirection: Axis.horizontal,
-        itemCount: products.length,
-        itemBuilder: (context, index) {
-          var data = products[index];
-          return GestureDetector(
-            onTap: () {},
-            child: ProductCard(
-              model: data,
-            ),
+      child: GridView.count(
+        crossAxisCount: 2,
+        children: List.generate(products.length, (index) {
+          return ProductCard(
+            model: products[index],
           );
-        },
+        }),
       ),
+      // child: ListView.builder(
+      //   physics: ClampingScrollPhysics(),
+      //   scrollDirection: Axis.horizontal,
+      //   itemCount: products.length,
+      //   itemBuilder: (context, index) {
+      //     var data = products[index];
+      //     return GestureDetector(
+      //       onTap: () {
+      //         Navigator.of(context).pushNamed(
+      //           "/product-details",
+      //           arguments: {'productId': data.productId},
+      //         );
+      //       },
+      //       child: ProductCard(
+      //         model: data,
+      //       ),
+      //     );
+      //   },
+      // ),
     );
   }
 }

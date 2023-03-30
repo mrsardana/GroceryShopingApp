@@ -11,7 +11,7 @@ class HomeSliderWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      color: Color.fromARGB(255, 206, 212, 208),
+      color: const Color.fromARGB(255, 239, 239, 197),
       child: _sliderList(ref),
     );
   }
@@ -47,7 +47,7 @@ class HomeSliderWidget extends ConsumerWidget {
           decoration: BoxDecoration(
             image: DecorationImage(
               image: NetworkImage(model.fullImagePath),
-              fit: BoxFit.contain,
+              fit: BoxFit.fitHeight,
             ),
           ),
         );
@@ -55,10 +55,10 @@ class HomeSliderWidget extends ConsumerWidget {
       options: CarouselOptions(
         enlargeCenterPage: true,
         autoPlay: true,
-        aspectRatio: 1.99,
-        autoPlayCurve: Curves.decelerate,
+        aspectRatio: 2,
+        autoPlayCurve: Curves.linear,
         enableInfiniteScroll: true,
-        autoPlayAnimationDuration: const Duration(microseconds: 800),
+        autoPlayAnimationDuration: const Duration(microseconds: 300),
         viewportFraction: 0.8,
       ),
     );

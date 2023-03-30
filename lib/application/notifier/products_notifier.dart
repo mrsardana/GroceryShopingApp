@@ -40,5 +40,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
   Future<void> refreshProducts() async {
     state = state.copyWith(products: [], hasNext: true);
     _page = 1;
+
+    await getProducts();
   }
 }

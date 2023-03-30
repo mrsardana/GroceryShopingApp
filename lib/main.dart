@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grocerry_shopping_app/pages/dashbord_page.dart';
 import 'package:grocerry_shopping_app/pages/get_started.dart';
@@ -9,6 +10,7 @@ import 'package:grocerry_shopping_app/pages/products_page.dart';
 import 'package:grocerry_shopping_app/pages/register_page.dart';
 import 'package:grocerry_shopping_app/utils/shared_service.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 Widget _defaultHome = const GetStarted();
 
 void main() async {
@@ -18,11 +20,11 @@ void main() async {
   if (_result) {
     _defaultHome = const DashboardPage();
   }
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +33,15 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(
           // primarySwatch: Color(0xff2980b9),
+          appBarTheme: const AppBarTheme(
+            systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarColor: Colors.black,
+              // statusBarIconBrightness: Brightness.dark,
+              statusBarBrightness: Brightness.light,
+            ),
+          ),
           colorScheme: ColorScheme.fromSwatch().copyWith(
-            primary: Color.fromARGB(255, 23, 155, 69),
+            primary: const Color.fromARGB(255, 23, 155, 69),
           ),
         ),
         // home: Scaffold(
@@ -40,6 +49,7 @@ class MyApp extends StatelessWidget {
         //   backgroundColor: Colors.grey[300],
         //   body: const GetStarted(),
         // ),
+        navigatorKey: navigatorKey,
         routes: <String, WidgetBuilder>{
           '/': (context) => _defaultHome,
           '/regiseter': (BuildContext context) => const RegisterPage(),
