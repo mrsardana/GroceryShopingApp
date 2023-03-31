@@ -277,9 +277,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   if (onValidateVal.isEmpty) {
                     return "* Required";
                   }
-                  bool phoneValid = RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                      .hasMatch(onValidateVal);
+                  bool phoneValid = RegExp(r"\d{10}").hasMatch(onValidateVal);
 
                   if (!phoneValid) {
                     return "Invalid Phone Number";
