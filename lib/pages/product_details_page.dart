@@ -5,6 +5,9 @@ import 'package:grocerry_shopping_app/components/widget_custom_stepper.dart';
 import 'package:grocerry_shopping_app/config.dart';
 import 'package:grocerry_shopping_app/models/product.dart';
 import 'package:grocerry_shopping_app/providers.dart';
+import 'package:snippet_coder_utils/FormHelper.dart';
+
+import '../utils/shared_service.dart';
 
 class ProductDetailsPage extends ConsumerStatefulWidget {
   const ProductDetailsPage({super.key});
@@ -210,9 +213,21 @@ class _ProductDetailsPageState extends ConsumerState<ProductDetailsPage> {
                 },
               ),
               TextButton.icon(
-                onPressed: () {
-                  final cartViewModel = ref.read(cartItemsProvider.notifier);
-                  cartViewModel.addCartItem(model.productId, qty);
+                onPressed: () async {
+                  if (await SharedService.isLoggedIn()) {
+                    final cartViewModel = ref.read(cartItemsProvider.notifier);
+                    cartViewModel.addCartItem(model.productId, qty);
+                  } else {
+                    FormHelper.showSimpleAlertDialog(
+                      context,
+                      Config.appName,
+                      "You must sign in to do this process",
+                      "Ok",
+                      () {
+                        Navigator.of(context).pop();
+                      },
+                    );
+                  }
                 },
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(

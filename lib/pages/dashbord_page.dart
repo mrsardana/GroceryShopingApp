@@ -2,11 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:grocerry_shopping_app/pages/home_page.dart';
+import 'package:grocerry_shopping_app/pages/my_account.dart';
 
 import 'cart_page.dart';
+import 'favotie_page.dart';
 
 class DashboardPage extends StatefulWidget {
-  const DashboardPage({super.key});
+  int selectedPage;
+  DashboardPage({super.key, required this.selectedPage});
 
   @override
   State<DashboardPage> createState() => _DashboardPageState();
@@ -16,11 +19,19 @@ class _DashboardPageState extends State<DashboardPage> {
   final List<Widget> widgetList = const [
     HomePage(),
     CartPage(),
-    HomePage(),
-    HomePage(),
+    Favourite(),
+    MyAccount(),
   ];
 
-  int index = 0;
+  int _index = 0;
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.selectedPage != null) {
+      _index = widget.selectedPage;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +40,10 @@ class _DashboardPageState extends State<DashboardPage> {
         selectedItemColor: const Color.fromARGB(255, 23, 155, 69),
         unselectedItemColor: Colors.black,
         type: BottomNavigationBarType.fixed,
-        currentIndex: index,
-        onTap: (_index) {
+        currentIndex: _index,
+        onTap: (index) {
           setState(() {
-            index = _index;
+            _index = index;
           });
         },
         items: const [
@@ -54,7 +65,7 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
         ],
       ),
-      body: widgetList[index],
+      body: widgetList[_index],
     );
   }
 }

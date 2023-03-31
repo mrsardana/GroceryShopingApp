@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grocerry_shopping_app/pages/dashbord_page.dart';
 import 'package:grocerry_shopping_app/pages/get_started.dart';
 import 'package:grocerry_shopping_app/pages/home_page.dart';
+import 'package:grocerry_shopping_app/pages/lock_page.dart';
 import 'package:grocerry_shopping_app/pages/login_page.dart';
 import 'package:grocerry_shopping_app/pages/product_details_page.dart';
 import 'package:grocerry_shopping_app/pages/products_page.dart';
@@ -17,9 +18,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   bool _result = await SharedService.isLoggedIn();
 
-  if (_result) {
-    _defaultHome = const DashboardPage();
-  }
+  // if (_result) {
+  //   _defaultHome =  DashboardPage();
+  // }
   runApp(ProviderScope(child: MyApp()));
 }
 
@@ -44,18 +45,20 @@ class MyApp extends StatelessWidget {
             primary: const Color.fromARGB(255, 23, 155, 69),
           ),
         ),
-        // home: Scaffold(
-        //   resizeToAvoidBottomInset: false,
-        //   backgroundColor: Colors.grey[300],
-        //   body: const GetStarted(),
-        // ),
+        home: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.grey[300],
+          body: const GetStarted(),
+        ),
         navigatorKey: navigatorKey,
         routes: <String, WidgetBuilder>{
-          '/': (context) => _defaultHome,
+          // '/': (context) => _defaultHome,
           '/regiseter': (BuildContext context) => const RegisterPage(),
           '/login': (BuildContext context) => const LoginPage(),
+          '/lock': (BuildContext context) => const LockedPage(),
           '/products': (BuildContext context) => const ProductsPage(),
-          '/home': (BuildContext context) => const DashboardPage(),
+          '/getStarted': (BuildContext context) => const GetStarted(),
+          '/home': (BuildContext context) => DashboardPage(selectedPage: 0),
           '/product-details': (BuildContext context) =>
               const ProductDetailsPage(),
         });

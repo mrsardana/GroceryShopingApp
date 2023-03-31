@@ -2,7 +2,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:grocerry_shopping_app/api/api_service.dart';
 import 'package:grocerry_shopping_app/config.dart';
+import 'package:grocerry_shopping_app/pages/dashbord_page.dart';
 import 'package:grocerry_shopping_app/pages/home_page.dart';
+import 'package:grocerry_shopping_app/utils/shared_service.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 
@@ -15,7 +17,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool isAsyncCallProcess = false;
-  static final GlobalKey<FormState> globalKey = GlobalKey<FormState>();
+  GlobalKey<FormState> globalKey = GlobalKey<FormState>();
   String? email;
   String? password;
   bool hidePassword = true;
@@ -182,10 +184,12 @@ class _LoginPageState extends State<LoginPage> {
                           "Ok",
                           () {
                             Navigator.of(context).pop();
-                            Navigator.of(context).pushNamedAndRemoveUntil(
-                              "/home",
-                              (route) => false,
-                            );
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        DashboardPage(selectedPage: 3)),
+                                (route) => false);
                           },
                         );
                       } else {

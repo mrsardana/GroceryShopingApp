@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:grocerry_shopping_app/pages/register_page.dart';
 
-import 'home_page.dart';
-
-class GetStarted extends StatefulWidget {
-  const GetStarted({super.key});
+class LockedPage extends StatefulWidget {
+  const LockedPage({super.key});
 
   @override
-  State<GetStarted> createState() => _GetStartedState();
+  State<LockedPage> createState() => _LockedPageState();
 }
 
-class _GetStartedState extends State<GetStarted> {
-  void _getStartedPressed() {
+class _LockedPageState extends State<LockedPage> {
+  void _loginPressed() {
     setState(() {
       Navigator.of(context).pushNamedAndRemoveUntil(
-        "/home",
-        (route) => true,
+        "/login",
+        (route) => false,
       );
     });
   }
@@ -32,31 +29,25 @@ class _GetStartedState extends State<GetStarted> {
               height: 120,
             ),
             Container(
+              alignment: Alignment.center,
+              height: 250,
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
               ),
               child: Image.asset(
-                'lib/assets/il_getStarted.png',
+                'lib/assets/locked.png',
               ),
             ),
             const SizedBox(
               height: 20,
             ),
             const Text(
-              "Shop Your Daily",
+              "You must sign-in to access this section",
               style: TextStyle(
-                fontSize: 32,
-                color: Color.fromARGB(255, 23, 155, 69),
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const Text(
-              "Necessary",
-              style: TextStyle(
-                fontSize: 32,
-                color: Color.fromARGB(255, 23, 155, 69),
-                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                color: Colors.black,
+                fontWeight: FontWeight.normal,
               ),
             ),
             const SizedBox(
@@ -66,21 +57,17 @@ class _GetStartedState extends State<GetStarted> {
               padding: const EdgeInsets.all(1),
               child: Container(
                 padding: const EdgeInsets.all(0),
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 23, 155, 69),
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                width: 280,
+                width: 200,
                 height: 52,
                 child: ElevatedButton(
-                  onPressed: _getStartedPressed,
+                  onPressed: _loginPressed,
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
                   child: const Text(
-                    'Get Started',
+                    'Login',
                     style: TextStyle(
                         color: Color.fromARGB(255, 231, 225, 225),
                         fontWeight: FontWeight.bold,

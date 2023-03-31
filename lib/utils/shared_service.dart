@@ -28,6 +28,7 @@ class SharedService {
 
     if (isCacheKeyExist) {
       var cacheData = await APICacheManager().getCacheData(KEY_NAME);
+      // print(cacheData.syncData);
       return loginResponseModelJson(cacheData.syncData);
     }
     return null;
@@ -35,6 +36,6 @@ class SharedService {
 
   static Future<void> logout(BuildContext context) async {
     await APICacheManager().deleteCache(KEY_NAME);
-    Navigator.pushNamedAndRemoveUntil(context, "/login", (route) => false);
+    Navigator.pushNamedAndRemoveUntil(context, "/getStarted", (route) => false);
   }
 }

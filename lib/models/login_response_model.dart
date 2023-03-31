@@ -52,7 +52,7 @@ class Data {
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
 
-    _data['fulName'] = fullName;
+    _data['fullName'] = fullName;
     _data['email'] = email;
     _data['address'] = address;
     _data['phone'] = phone;

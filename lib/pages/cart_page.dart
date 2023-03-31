@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grocerry_shopping_app/models/cart.dart';
 import 'package:grocerry_shopping_app/models/cart_product.dart';
+import 'package:grocerry_shopping_app/pages/lock_page.dart';
 import 'package:grocerry_shopping_app/providers.dart';
+import 'package:grocerry_shopping_app/utils/shared_service.dart';
 import 'package:grocerry_shopping_app/widgets/widget_cart_item.dart';
 
 import '../config.dart';
@@ -17,23 +19,38 @@ class CartPage extends ConsumerStatefulWidget {
 class _CartPageState extends ConsumerState<CartPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Carts"),
-      ),
-      bottomNavigationBar: _checkoutBottomNavbar(),
-      body: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Flexible(
-              child: _cartList(ref),
-              flex: 1,
-            )
-          ],
-        ),
-      ),
+    return FutureBuilder(
+      future: SharedService.isLoggedIn(),
+      builder: (BuildContext context, AsyncSnapshot<bool> loginModel) {
+        if (loginModel.hasData) {
+          if (loginModel.data!) {
+            return Scaffold(
+              appBar: AppBar(
+                title: const Text("Carts"),
+                automaticallyImplyLeading: false,
+              ),
+              bottomNavigationBar: _checkoutBottomNavbar(),
+              body: Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Flexible(
+                      child: _cartList(ref),
+                      flex: 1,
+                    )
+                  ],
+                ),
+              ),
+            );
+          } else {
+            return const LockedPage();
+          }
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
     );
   }
 

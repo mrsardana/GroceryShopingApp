@@ -164,7 +164,7 @@ class APIService {
 
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
-      'Authorization': 'Basic ${loginDetails!.data.token.toString()}'
+      'Authorization': 'Basic ${loginDetails?.data.token.toString()}'
     };
 
     var url = Uri.http(Config.apiURL, Config.cartAPI);
@@ -175,10 +175,11 @@ class APIService {
 
       return Cart.fromJson(data['data']);
     } else if (response.statusCode == 401) {
-      navigatorKey.currentState?.pushNamedAndRemoveUntil(
-        "/login",
-        (route) => false,
-      );
+      return null;
+      // navigatorKey.currentState?.pushNamedAndRemoveUntil(
+      //   "/lock",
+      //   (route) => false,
+      // );
     } else {
       return null;
     }
@@ -189,7 +190,7 @@ class APIService {
 
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
-      'Authorization': 'Basic ${loginDetails!.data.token.toString()}'
+      'Authorization': 'Basic ${loginDetails?.data.token.toString()}'
     };
 
     var url = Uri.http(Config.apiURL, Config.cartAPI);
@@ -209,10 +210,7 @@ class APIService {
     if (response.statusCode == 200) {
       return true;
     } else if (response.statusCode == 401) {
-      navigatorKey.currentState?.pushNamedAndRemoveUntil(
-        "/login",
-        (route) => false,
-      );
+      return null;
     } else {
       return null;
     }
