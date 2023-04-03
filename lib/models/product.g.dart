@@ -12,7 +12,7 @@ _$_Product _$$_ProductFromJson(Map<String, dynamic> json) => _$_Product(
           ? null
           : Category.fromJson(json['category'] as Map<String, dynamic>),
       productShortDescription: json['productShortDescription'] as String?,
-      productDescription: json['productDescription'] as String,
+      productDescription: json['productDescription'] as String?,
       productPrice: (json['productPrice'] as num).toDouble(),
       productSalePrice: (json['productSalePrice'] as num).toDouble(),
       productImage: json['productImage'] as String,

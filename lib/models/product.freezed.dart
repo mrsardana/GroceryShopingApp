@@ -23,7 +23,7 @@ mixin _$Product {
   String get productName => throw _privateConstructorUsedError;
   Category? get category => throw _privateConstructorUsedError;
   String? get productShortDescription => throw _privateConstructorUsedError;
-  String get productDescription => throw _privateConstructorUsedError;
+  String? get productDescription => throw _privateConstructorUsedError;
   double get productPrice => throw _privateConstructorUsedError;
   double get productSalePrice => throw _privateConstructorUsedError;
   String get productImage => throw _privateConstructorUsedError;
@@ -46,7 +46,7 @@ abstract class $ProductCopyWith<$Res> {
       {String productName,
       Category? category,
       String? productShortDescription,
-      String productDescription,
+      String? productDescription,
       double productPrice,
       double productSalePrice,
       String productImage,
@@ -74,7 +74,7 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     Object? productName = null,
     Object? category = freezed,
     Object? productShortDescription = freezed,
-    Object? productDescription = null,
+    Object? productDescription = freezed,
     Object? productPrice = null,
     Object? productSalePrice = null,
     Object? productImage = null,
@@ -96,10 +96,10 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
           ? _value.productShortDescription
           : productShortDescription // ignore: cast_nullable_to_non_nullable
               as String?,
-      productDescription: null == productDescription
+      productDescription: freezed == productDescription
           ? _value.productDescription
           : productDescription // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       productPrice: null == productPrice
           ? _value.productPrice
           : productPrice // ignore: cast_nullable_to_non_nullable
@@ -155,7 +155,7 @@ abstract class _$$_ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
       {String productName,
       Category? category,
       String? productShortDescription,
-      String productDescription,
+      String? productDescription,
       double productPrice,
       double productSalePrice,
       String productImage,
@@ -181,7 +181,7 @@ class __$$_ProductCopyWithImpl<$Res>
     Object? productName = null,
     Object? category = freezed,
     Object? productShortDescription = freezed,
-    Object? productDescription = null,
+    Object? productDescription = freezed,
     Object? productPrice = null,
     Object? productSalePrice = null,
     Object? productImage = null,
@@ -203,10 +203,10 @@ class __$$_ProductCopyWithImpl<$Res>
           ? _value.productShortDescription
           : productShortDescription // ignore: cast_nullable_to_non_nullable
               as String?,
-      productDescription: null == productDescription
+      productDescription: freezed == productDescription
           ? _value.productDescription
           : productDescription // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       productPrice: null == productPrice
           ? _value.productPrice
           : productPrice // ignore: cast_nullable_to_non_nullable
@@ -265,7 +265,7 @@ class _$_Product implements _Product {
   @override
   final String? productShortDescription;
   @override
-  final String productDescription;
+  final String? productDescription;
   @override
   final double productPrice;
   @override
@@ -351,7 +351,7 @@ abstract class _Product implements Product {
       {required final String productName,
       required final Category? category,
       required final String? productShortDescription,
-      required final String productDescription,
+      required final String? productDescription,
       required final double productPrice,
       required final double productSalePrice,
       required final String productImage,
@@ -369,7 +369,7 @@ abstract class _Product implements Product {
   @override
   String? get productShortDescription;
   @override
-  String get productDescription;
+  String? get productDescription;
   @override
   double get productPrice;
   @override
