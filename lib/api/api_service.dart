@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grocerry_shopping_app/main.dart';
 import 'package:grocerry_shopping_app/models/category.dart';
 import 'package:grocerry_shopping_app/config.dart';
+import 'package:grocerry_shopping_app/models/fav.dart';
 import 'package:grocerry_shopping_app/models/product.dart';
 import 'package:grocerry_shopping_app/models/product_filter.dart';
 import 'package:grocerry_shopping_app/models/slider.dart';
@@ -243,6 +244,82 @@ class APIService {
         "/login",
         (route) => false,
       );
+    } else {
+      return null;
+    }
+  }
+
+  Future<Fav?> getFav() async {
+    var loginDetails = await SharedService.loginDetails();
+
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Basic ${loginDetails?.data.token.toString()}'
+    };
+
+    var url = Uri.http(Config.apiURL, Config.favAPI);
+    var response = await client.get(url, headers: requestHeaders);
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+
+      return Fav.fromJson(data['data']);
+    } else if (response.statusCode == 401) {
+      return null;
+    } else {
+      return null;
+    }
+  }
+
+  Future<bool?> addFavItem(productId) async {
+    var loginDetails = await SharedService.loginDetails();
+
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Basic ${loginDetails?.data.token.toString()}'
+    };
+
+    var url = Uri.http(Config.apiURL, Config.favAPI);
+    var response = await client.post(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode({
+        "products": [
+          {"product": productId}
+        ]
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else if (response.statusCode == 401) {
+      return null;
+    } else {
+      return null;
+    }
+  }
+
+  Future<bool?> removeFavItem(productId) async {
+    var loginDetails = await SharedService.loginDetails();
+
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Basic ${loginDetails!.data.token.toString()}'
+    };
+
+    var url = Uri.http(Config.apiURL, Config.favAPI);
+    var response = await client.delete(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode(
+        {"productId": productId},
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else if (response.statusCode == 401) {
+      return null;
     } else {
       return null;
     }

@@ -328,6 +328,7 @@ class _MyAccountState extends ConsumerState<MyAccount> {
                   onPressed: () {
                     SharedService.logout(context);
                     ref.invalidate(cartItemsProvider);
+                    ref.invalidate(favItemsProvider);
                   },
                   child: const Text("Logout"))
             ],

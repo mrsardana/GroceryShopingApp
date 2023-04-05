@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grocerry_shopping_app/config.dart';
-import 'package:grocerry_shopping_app/models/fav.dart';
-import 'package:grocerry_shopping_app/providers.dart';
-import '../models/product.dart';
+import 'package:grocerry_shopping_app/models/fav_product.dart';
+import 'package:grocerry_shopping_app/models/product.dart';
 
-class ProductCard extends ConsumerStatefulWidget {
-  final Product? model;
-  const ProductCard({super.key, this.model});
+class FavItemWidget extends StatefulWidget {
+  const FavItemWidget({
+    Key? key,
+    required this.model,
+    this.onItemRemove,
+  }) : super(key: key);
+
+  final FavProduct model;
+  final Function? onItemRemove;
 
   @override
-  _ProductCardState createState() => _ProductCardState();
+  State<FavItemWidget> createState() => _FavItemWidgetState();
 }
 
-class _ProductCardState extends ConsumerState<ProductCard> {
+class _FavItemWidgetState extends State<FavItemWidget> {
   @override
   Widget build(BuildContext context) {
-    return _productCard(ref);
-  }
-
-  Widget _productCard(WidgetRef ref) {
-    final favProvider = ref.watch(favItemsProvider);
-    final favProduct = favProvider.favModel?.favItem;
     return Container(
       width: 150,
       decoration: const BoxDecoration(color: Colors.white),
@@ -33,7 +31,7 @@ class _ProductCardState extends ConsumerState<ProductCard> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Visibility(
-                visible: widget.model!.calculateDiscount > 0,
+                visible: widget.model.product.calculateDiscount > 0,
                 child: Align(
                   alignment: Alignment.topLeft,
                   child: Container(
@@ -42,7 +40,7 @@ class _ProductCardState extends ConsumerState<ProductCard> {
                       color: Colors.green,
                     ),
                     child: Text(
-                      "${widget.model!.calculateDiscount}% OFF",
+                      "${widget.model.product.calculateDiscount}% OFF",
                       style: const TextStyle(
                           color: Colors.white,
                           fontSize: 12,
@@ -52,7 +50,7 @@ class _ProductCardState extends ConsumerState<ProductCard> {
                 ),
               ),
               Visibility(
-                visible: widget.model!.calculateDiscount <= 0,
+                visible: widget.model.product.calculateDiscount <= 0,
                 child: Align(
                   alignment: Alignment.topLeft,
                   child: Container(
@@ -70,23 +68,18 @@ class _ProductCardState extends ConsumerState<ProductCard> {
               GestureDetector(
                 child: SizedBox(
                   child: Image.network(
-                    widget.model!.fullImagePath,
+                    widget.model.product.fullImagePath,
                     fit: BoxFit.cover,
                   ),
                   height: 100,
                   // width: MediaQuery.of(context).size.width,
                 ),
-                onTap: () {
-                  Navigator.of(context).pushNamed(
-                    "/product-details",
-                    arguments: {'productId': widget.model!.productId},
-                  );
-                },
+                onTap: () {},
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, left: 10),
                 child: Text(
-                  widget.model!.productName,
+                  widget.model.product.productName,
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
@@ -105,22 +98,23 @@ class _ProductCardState extends ConsumerState<ProductCard> {
                       child: Row(
                         children: [
                           Text(
-                            "${Config.currency}${widget.model!.productPrice.toString()}",
+                            "${Config.currency}${widget.model.product.productPrice.toString()}",
                             textAlign: TextAlign.left,
                             style: TextStyle(
                               fontSize: 12,
-                              color: widget.model!.calculateDiscount > 0
+                              color: widget.model.product.calculateDiscount > 0
                                   ? Colors.red
                                   : Colors.black,
                               fontWeight: FontWeight.bold,
-                              decoration: widget.model!.calculateDiscount > 0
-                                  ? TextDecoration.lineThrough
-                                  : null,
+                              decoration:
+                                  widget.model.product.calculateDiscount > 0
+                                      ? TextDecoration.lineThrough
+                                      : null,
                             ),
                           ),
                           Text(
-                            (widget.model!.calculateDiscount > 0)
-                                ? " ${widget.model!.productSalePrice.toString()}"
+                            (widget.model.product.calculateDiscount > 0)
+                                ? " ${widget.model.product.productSalePrice.toString()}"
                                 : "",
                             textAlign: TextAlign.left,
                             style: const TextStyle(
@@ -133,27 +127,13 @@ class _ProductCardState extends ConsumerState<ProductCard> {
                       ),
                     ),
                     GestureDetector(
-                      child: Icon(
+                      child: const Icon(
                         Icons.favorite,
-                        color: favProduct != null
-                            ? (favProduct.contains(widget.model!.productId))
-                                ? Colors.red
-                                : Colors.grey
-                            : Colors.grey,
+                        color: Colors.red,
                         size: 20,
                       ),
                       onTap: () {
-                        if (favProduct != null) {
-                          if (favProduct.contains(widget.model!.productId)) {
-                            final favViewModel =
-                                ref.read(favItemsProvider.notifier);
-                            favViewModel.removeFavItem(widget.model!.productId);
-                          } else {
-                            final favViewModel =
-                                ref.read(favItemsProvider.notifier);
-                            favViewModel.addFavItem(widget.model!.productId);
-                          }
-                        }
+                        widget.onItemRemove!(widget.model);
                       },
                     )
                   ],

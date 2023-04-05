@@ -1,21 +1,23 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grocerry_shopping_app/api/api_service.dart';
 import 'package:grocerry_shopping_app/config.dart';
 import 'package:grocerry_shopping_app/pages/dashbord_page.dart';
 import 'package:grocerry_shopping_app/pages/home_page.dart';
+import 'package:grocerry_shopping_app/providers.dart';
 import 'package:grocerry_shopping_app/utils/shared_service.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends ConsumerState<LoginPage> {
   bool isAsyncCallProcess = false;
   GlobalKey<FormState> globalKey = GlobalKey<FormState>();
   String? email;
@@ -30,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
       body: ProgressHUD(
         child: Form(
           key: globalKey,
-          child: _loginUI(),
+          child: _loginUI(ref),
         ),
         inAsyncCall: isAsyncCallProcess,
         opacity: 0.3,
@@ -39,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _loginUI() {
+  Widget _loginUI(WidgetRef ref) {
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -183,6 +185,10 @@ class _LoginPageState extends State<LoginPage> {
                           "Login successfully",
                           "Ok",
                           () {
+                            final favViewModel =
+                                ref.read(favItemsProvider.notifier);
+                            ref.invalidate(favItemsProvider);
+
                             Navigator.of(context).pop();
                             Navigator.pushAndRemoveUntil(
                                 context,
