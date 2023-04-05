@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:grocerry_shopping_app/providers.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import '../utils/shared_service.dart';
@@ -326,6 +327,7 @@ class _MyAccountState extends ConsumerState<MyAccount> {
                   ),
                   onPressed: () {
                     SharedService.logout(context);
+                    ref.invalidate(cartItemsProvider);
                   },
                   child: const Text("Logout"))
             ],
