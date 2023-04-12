@@ -10,6 +10,7 @@ class Config {
   static const String sliderAPI = "api/slider";
   static const String cartAPI = "api/cart";
   static const String favAPI = "api/fav";
+  static const String orderAPI = "api/order";
   static const int pageSize = 10;
   static const String currency = "\$";
 }

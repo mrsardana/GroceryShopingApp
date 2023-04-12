@@ -4,6 +4,7 @@ import 'package:grocerry_shopping_app/main.dart';
 import 'package:grocerry_shopping_app/models/category.dart';
 import 'package:grocerry_shopping_app/config.dart';
 import 'package:grocerry_shopping_app/models/fav.dart';
+import 'package:grocerry_shopping_app/models/order_payment.dart';
 import 'package:grocerry_shopping_app/models/product.dart';
 import 'package:grocerry_shopping_app/models/product_filter.dart';
 import 'package:grocerry_shopping_app/models/slider.dart';
@@ -323,5 +324,119 @@ class APIService {
     } else {
       return null;
     }
+  }
+
+  Future<Map<String, dynamic>> processPayment(
+    cardHolderName,
+    cardNumber,
+    cardExpMonth,
+    cardExpYear,
+    cardCVC,
+    amount,
+  ) async {
+    var loginDetails = await SharedService.loginDetails();
+
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Basic ${loginDetails!.data.token.toString()}'
+    };
+    var url = Uri.http(Config.apiURL, Config.orderAPI);
+    var response = await client.post(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode(
+        {
+          "card_Name": cardHolderName,
+          "card_Number": cardNumber,
+          "card_ExpMonth": cardExpMonth,
+          "card_ExpYear": cardExpYear,
+          "card_CVC": cardCVC,
+          "amount": amount
+        },
+      ),
+    );
+
+    Map<String, dynamic> resModel = {};
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      resModel["message"] = "success";
+      resModel["data"] = OrderPayment.fromJson(data["data"]);
+    } else if (response.statusCode == 401) {
+      navigatorKey.currentState?.pushNamedAndRemoveUntil(
+        "/login",
+        (route) => false,
+      );
+    } else {
+      var data = jsonDecode(response.body);
+      resModel["message"] = data["message"];
+    }
+    return resModel;
+  }
+
+  Future<bool?> updateOrder(
+    orderId,
+    transactionId,
+  ) async {
+    var loginDetails = await SharedService.loginDetails();
+
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Basic ${loginDetails!.data.token.toString()}'
+    };
+
+    var url = Uri.http(Config.apiURL, Config.orderAPI);
+    var response = await client.put(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode(
+        {
+          "orderId": orderId,
+          "status": "success",
+          "transaction_id": transactionId,
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      return true;
+    } else if (response.statusCode == 401) {
+      navigatorKey.currentState?.pushNamedAndRemoveUntil(
+        "/login",
+        (route) => false,
+      );
+      return false;
+    } else {
+      return false;
+    }
+  }
+
+  Future<Map<String, dynamic>> getOrder() async {
+    var loginDetails = await SharedService.loginDetails();
+
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Basic ${loginDetails!.data.token.toString()}'
+    };
+
+    var url = Uri.http(Config.apiURL, Config.orderAPI);
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+    Map<String, dynamic> resModel = {};
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      resModel["data"] = data["data"];
+    } else if (response.statusCode == 401) {
+      navigatorKey.currentState?.pushNamedAndRemoveUntil(
+        "/login",
+        (route) => false,
+      );
+    } else {
+      var data = jsonDecode(response.body);
+      resModel["message"] = data["message"];
+    }
+    return resModel;
   }
 }

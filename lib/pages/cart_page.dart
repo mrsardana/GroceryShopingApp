@@ -117,12 +117,18 @@ class _checkoutBottomNavbar extends ConsumerWidget {
                           style: const TextStyle(
                               color: Colors.white, fontWeight: FontWeight.bold),
                         ),
-                        const Text(
-                          "Proceed to Checkout",
-                          style: TextStyle(
+                        GestureDetector(
+                          child: const Text(
+                            "Proceed to Checkout",
+                            style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 15),
+                              fontSize: 15,
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.of(context).pushNamed("/payments");
+                          },
                         )
                       ],
                     ),

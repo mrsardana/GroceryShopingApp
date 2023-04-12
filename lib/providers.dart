@@ -2,10 +2,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grocerry_shopping_app/api/api_service.dart';
 import 'package:grocerry_shopping_app/application/notifier/cart_notifier.dart';
 import 'package:grocerry_shopping_app/application/notifier/fav_notifier.dart';
+import 'package:grocerry_shopping_app/application/notifier/order_notifier.dart';
+import 'package:grocerry_shopping_app/application/notifier/order_payment_notifier.dart';
 import 'package:grocerry_shopping_app/application/notifier/products_filter_notifier.dart';
 import 'package:grocerry_shopping_app/application/notifier/products_notifier.dart';
 import 'package:grocerry_shopping_app/application/state/cart_state.dart';
 import 'package:grocerry_shopping_app/application/state/fav_state.dart';
+import 'package:grocerry_shopping_app/application/state/order_payment_state.dart';
+import 'package:grocerry_shopping_app/application/state/order_state.dart';
 import 'package:grocerry_shopping_app/application/state/product_state.dart';
 import 'package:grocerry_shopping_app/models/category.dart';
 import 'package:grocerry_shopping_app/models/pagination.dart';
@@ -69,6 +73,19 @@ final cartItemsProvider = StateNotifierProvider<CartNotifier, CartState>(
 
 final favItemsProvider = StateNotifierProvider<FavNotifier, FavState>(
   (ref) => FavNotifier(
+    ref.watch(apiService),
+  ),
+);
+
+final orderPaymentProvider =
+    StateNotifierProvider<OrderPaymentNotifier, OrderPaymentState>(
+  (ref) => OrderPaymentNotifier(
+    ref.watch(apiService),
+  ),
+);
+
+final orderProvider = StateNotifierProvider<OrderNotifier, OrderState>(
+  (ref) => OrderNotifier(
     ref.watch(apiService),
   ),
 );
