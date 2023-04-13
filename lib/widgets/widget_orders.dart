@@ -17,7 +17,7 @@ class _OrdersState extends State<Orders> {
     // print(widget.model['userId']);
     return Card(
       elevation: 0,
-      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+      margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
       child: Container(
         margin: const EdgeInsets.all(5),
         padding: const EdgeInsets.all(5),
@@ -97,7 +97,7 @@ class _OrdersState extends State<Orders> {
                 Text(
                   "${Config.currency}${widget.model['grandTotal'].toStringAsFixed(2)}",
                   style: const TextStyle(
-                    fontSize: 17,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 )
@@ -146,6 +146,8 @@ class _OrdersState extends State<Orders> {
             'products': widget.model['products'],
             'grandTotal': widget.model['grandTotal'],
             'orderStatus': widget.model['orderStatus'],
+            'id': widget.model['_id'],
+            'createdAt': widget.model['createdAt'],
           },
         );
       },
@@ -165,7 +167,7 @@ class _OrdersState extends State<Orders> {
     if (status == "pending" || status == "processing") {
       icon = const Icon(Icons.clear, color: Colors.redAccent);
       color = Colors.redAccent;
-      status = "Failed";
+      status = "payment failed";
     } else if (status == "success") {
       icon = const Icon(Icons.check, color: Colors.green);
       color = Colors.green;

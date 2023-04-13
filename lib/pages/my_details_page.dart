@@ -29,11 +29,13 @@ class _MyDetailsState extends State<MyDetails> {
   @override
   Future<void> getLoginDetails() async {
     var loginDetails = await SharedService.loginDetails();
-    fullName = loginDetails!.data.fullName.toString();
-    email = loginDetails.data.email.toString();
-    password = loginDetails.data.token.toString();
-    address = loginDetails.data.address.toString();
-    phone = loginDetails.data.phone.toString();
+    setState(() {
+      fullName = loginDetails!.data.fullName.toString();
+      email = loginDetails.data.email.toString();
+      password = loginDetails.data.token.toString();
+      address = loginDetails.data.address.toString();
+      phone = loginDetails.data.phone.toString();
+    });
   }
 
   @override

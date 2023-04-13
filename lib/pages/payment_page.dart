@@ -234,7 +234,7 @@ class _PaymentPageState extends ConsumerState<PaymentPage> {
                       );
                     } else {
                       // ref.invalidate(cartItemsProvider)
-                      // ref.invalidate(orderProvider);
+                      ref.invalidate(orderProvider);
                       final orderModel = ref.watch(orderProvider.notifier);
                       final cartViewModel =
                           ref.read(cartItemsProvider.notifier);

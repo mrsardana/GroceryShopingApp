@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
               const ProductDetailsPage(),
           '/my-details': (BuildContext context) => MyDetails(),
           '/order': (BuildContext context) => const OrderPage(),
-          '/order-details': (BuildContext context) => const OrderDetailsPage(),
+          '/order-details': (BuildContext context) => OrderDetailsPage(),
         });
   }
 }
