@@ -148,6 +148,7 @@ class _OrdersState extends State<Orders> {
             'orderStatus': widget.model['orderStatus'],
             'id': widget.model['_id'],
             'createdAt': widget.model['createdAt'],
+            'transactionId': widget.model['transactionId'],
           },
         );
       },

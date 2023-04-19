@@ -1,22 +1,30 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:check_points/check_points.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:grocerry_shopping_app/api/api_service.dart';
 import 'package:grocerry_shopping_app/config.dart';
+import 'package:grocerry_shopping_app/providers.dart';
 import 'package:grocerry_shopping_app/utils/shared_service.dart';
+import 'package:snippet_coder_utils/FormHelper.dart';
 
-class OrderDetailsPage extends StatefulWidget {
+class OrderDetailsPage extends ConsumerStatefulWidget {
   const OrderDetailsPage({super.key});
 
   @override
-  State<OrderDetailsPage> createState() => _OrderDetailsPageState();
+  _OrderDetailsPageState createState() => _OrderDetailsPageState();
 }
 
-class _OrderDetailsPageState extends State<OrderDetailsPage> {
+class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
   late List products;
   late String orderStatus;
   late String orderId;
   late String createdAt;
   late double grandTotal;
+  late String transactionId;
   String? address;
+  bool isLoading = false;
   @override
   void didChangeDependencies() {
     final Map? arguments = ModalRoute.of(context)!.settings.arguments as Map;
@@ -27,6 +35,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
       grandTotal = arguments["grandTotal"];
       orderId = arguments["id"];
       createdAt = arguments["createdAt"];
+      transactionId = arguments["transactionId"];
     }
     getLoginDetails();
     super.didChangeDependencies();
@@ -48,7 +57,9 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
       appBar: AppBar(
         title: const Text("Order Details"),
       ),
-      body: orderDetailUI(),
+      body: isLoading == true
+          ? const Center(child: CircularProgressIndicator())
+          : orderDetailUI(),
     );
   }
 
@@ -87,14 +98,23 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                   checkPoints: ["Processing", "Delivered"],
                   checkPointFilledColor: Colors.green,
                 )
-              : const Text(
-                  "Order Payment Failed",
-                  style: TextStyle(
-                    color: Colors.red,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+              : orderStatus == "cancelled"
+                  ? const Text(
+                      "Order Cancelled",
+                      style: TextStyle(
+                        color: Colors.redAccent,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  : const Text(
+                      "Order Payment Failed",
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
           const Divider(color: Colors.grey),
           _listOrderItems(products),
           const Divider(color: Colors.grey),
@@ -106,6 +126,84 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
             "Paid",
             "${grandTotal.toStringAsFixed(2)}",
           ),
+          orderStatus == "success"
+              ? Center(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text(
+                            'Cancel Order',
+                            style: TextStyle(
+                                color: Colors.red, fontWeight: FontWeight.bold),
+                          ),
+                          content: SingleChildScrollView(
+                            child: ListBody(
+                              children: const <Widget>[
+                                Text(
+                                    'Are you sure you want to cancel this order?'),
+                              ],
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              child: const Text(
+                                'Yes',
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () async {
+                                var response = await APIService().updateOrder(
+                                  orderId,
+                                  transactionId,
+                                  "cancelled",
+                                );
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                Navigator.of(context).pop();
+                                await Future.delayed(
+                                    const Duration(seconds: 1));
+                                if (response!) {
+                                  setState(() {
+                                    ref.invalidate(orderProvider);
+                                    orderStatus = "cancelled";
+                                    isLoading = false;
+                                  });
+                                } else {
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                }
+                              },
+                            ),
+                            TextButton(
+                              child: const Text(
+                                'No',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    child: const Text("Cancel Order"),
+                  ),
+                )
+              : Divider(color: Colors.grey[200]),
           Divider(color: Colors.grey[200]),
           Divider(color: Colors.grey[200]),
           Divider(color: Colors.grey[200]),

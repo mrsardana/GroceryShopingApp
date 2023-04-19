@@ -377,6 +377,7 @@ class APIService {
   Future<bool?> updateOrder(
     orderId,
     transactionId,
+    status,
   ) async {
     var loginDetails = await SharedService.loginDetails();
 
@@ -392,7 +393,7 @@ class APIService {
       body: jsonEncode(
         {
           "orderId": orderId,
-          "status": "success",
+          "status": status,
           "transaction_id": transactionId,
         },
       ),

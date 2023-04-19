@@ -49,6 +49,7 @@ class OrderPaymentNotifier extends StateNotifier<OrderPaymentState> {
         var response = await _apiService.updateOrder(
           orderPayment.orderId,
           stripeResponse.id,
+          "success",
         );
 
         if (response!) {
